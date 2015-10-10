@@ -1,7 +1,7 @@
 <?php
 namespace Myob\AccountRightV2;
 
-require_once(__DIR__.'/../../inc/dbconn.php');
+require_once(__DIR__.'../inc/dbconn.php');
 
 /**
  * AccountRightV2 API class
