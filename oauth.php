@@ -23,7 +23,7 @@ if(isset($_GET['code'])) {
 	$json = $accountRight->getAccessToken($_GET['code']);
 
 	// Set Company File
-	$accountRight->getCompanyFile('COMPANY FILE NAME');
+	$accountRight->getCompanyFile($myobConfig['companyfile']);
 
 	header('Location: index.php');
 	
