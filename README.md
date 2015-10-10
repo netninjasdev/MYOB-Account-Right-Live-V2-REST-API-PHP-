@@ -11,9 +11,8 @@ Tokens are saved to a MySQL database table where they are retrieved and updated.
 **Installation**
 
  1. Create MySQL database
- 2. Set database access details in /inc/includes.inc.php
- 3. Set Myob, developer and company file access details in config.php
- 4. Run start_oauth.php to initially authorise your application via my.Myob.  This will save the access token and refresh token to the database.  The tokens will automatically be refreshed after this first run
+ 2. Set database access details and Myob, developer and company file access details in /inc/includes.inc.php
+ 3. Run start_oauth.php to initially authorise your application via my.Myob.  This will save the access token and refresh token to the database.  The tokens will automatically be refreshed after this first run
 
 
 **Examples**
