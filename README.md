@@ -1,17 +1,24 @@
-MYOB Account Right Live V2 REST API PHP
+**MYOB Account Right Live V2 REST API PHP**
 
-Get started
+**Get started**
 
 Small sample PHP Class which can be used to connect and communicate with the MYOB AccountRightV2 RESTful API.
 
-The examples can Authorise your application, select your Company File and make changes to the Contacts and Sales (Invoices) in your MYOB Company File.
+This script can Authorise your application and obtain oauth access and refresh tokens, select your Company File and make select items from the Inventory, Contacts and Sales (Invoices) in your MYOB Company File.
 
-Examples are provided below.
-Installation
+Tokens are saved to a MySQL database table where they are retrieved and updated.  Refresh tokens are used to update the access tokens once they expire.
 
-Examples
+**Installation**
 
-Provided in the index page
+ 1. Create MySQL database
+ 2. Set database access details in /inc/includes.inc.php
+ 3. Set Myob, developer and company file access details in config.php
+
+
+**Examples**
+
+Examples for usage are provided in the index page, this includes get, set and delete for Inventory, Contacts and Sales Invoices / Invoice Line Items.  The examples also include how to filter contacts and items.
 
 This class is very small and is not finalised for production use. If you want to contribute to the class please make a pull request and I'll be happy to merge.
+
 
