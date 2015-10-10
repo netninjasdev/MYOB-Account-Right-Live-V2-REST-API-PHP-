@@ -11,7 +11,7 @@ require_once(__DIR__.'/../inc/dbconn.php');
  * 
  * THIS CLASS IS NOT IN ANY WAY AFFILIATED WITH MYOB OR ACCOUNTRIGHT
  *
- * @author Leigh Morrow <https://github.com/melbwebdesigns>
+ * @author Leigh Morrow <https://github.com/melbwebdesign>
  * @version 1.0
  *
  */
@@ -235,7 +235,7 @@ class AccountRightV2 {
 		$created_date = $date_now->format('Y-m-d H:i:s');
 		
 		global $conn;
-		$stmt = $conn->prepare('UPDATE myob_keys SET access_token=:access_token,refresh_token=:refresh_token,expires_date=:expires_date,created_date=:created_date,expire_time=:expire_time WHERE Seq=2');
+		$stmt = $conn->prepare('UPDATE myob_keys SET access_token=:access_token,refresh_token=:refresh_token,expires_date=:expires_date,created_date=:created_date,expire_time=:expire_time WHERE Seq=1');
 		$stmt->execute(array(':access_token'=>$json->access_token,':refresh_token'=>$json->refresh_token,':expires_date'=>$date_time,':created_date'=>$created_date,':expire_time'=>$json->expires_in));
 
         $this->retriveAccessToken();
@@ -252,7 +252,7 @@ class AccountRightV2 {
 		$currentDate = new \DateTime('NOW');
 		
 		global $conn;
-		$stmt = $conn->prepare('SELECT * FROM myob_keys WHERE Seq=2');
+		$stmt = $conn->prepare('SELECT * FROM myob_keys WHERE Seq=1');
 		$stmt->execute();
 		while($row = $stmt->fetch(\PDO::FETCH_OBJ)) {
 			$_SESSION['expires'] = new \DateTime($row->expires_date);
@@ -292,7 +292,7 @@ class AccountRightV2 {
 				$this->_guid = $cf->Id;
 				$_SESSION['guid'] = $this->_guid;
 				global $conn;
-				$stmt = $conn->prepare('UPDATE myob_keys SET company_guid=:company_guid,company_name=:company_name,company_url=:company_url WHERE Seq=2');
+				$stmt = $conn->prepare('UPDATE myob_keys SET company_guid=:company_guid,company_name=:company_name,company_url=:company_url WHERE Seq=1');
 				$stmt->execute(array(':company_guid'=>$cf->Id,':company_name'=>$cf->Name,':company_url'=>$cf->Uri));
 				return true;
 			endif;
