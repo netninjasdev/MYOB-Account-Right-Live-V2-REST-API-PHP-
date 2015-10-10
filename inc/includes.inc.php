@@ -29,3 +29,5 @@ $myobConfig['password'] = '';
 $myobConfig['cfusername'] = 'Administrator';
 // Specific company file password
 $myobConfig['cfpassword'] = '';
+// Set the name of the company file you want to work with
+$myobConfig['companyfile'] = '';
