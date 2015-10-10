@@ -1,8 +1,7 @@
 <?php
-
 namespace Myob\AccountRightV2;
 
-require_once(__DIR__.'/../inc/dbconn.php');
+require_once(__DIR__.'/../../inc/dbconn.php');
 
 /**
  * AccountRightV2 API class
@@ -11,7 +10,7 @@ require_once(__DIR__.'/../inc/dbconn.php');
  * 
  * THIS CLASS IS NOT IN ANY WAY AFFILIATED WITH MYOB OR ACCOUNTRIGHT
  *
- * @author Leigh Morrow <https://github.com/melbwebdesign>
+ * @author Leigh Morrow <https://github.com/melbwebdesigns>
  * @version 1.0
  *
  */
@@ -198,7 +197,7 @@ class AccountRightV2 {
      * @return string MYOB Access Token
      */
     public function refreshToken($refreshToken) {
-        $params = array(
+		$params = array(
             'client_id' => $this->_apikey,
             'client_secret' => $this->_apisecret,
             'refresh_token' => $refreshToken,
@@ -221,17 +220,11 @@ class AccountRightV2 {
         } elseif(isset($json->Errors)) {
             throw new \Exception(print_r($json->Errors, true));
         }
-				
-        $_SESSION['access_token'] = $json->access_token;
-        $_SESSION['refresh'] = $json->refresh_token;
-
+		
         $date = new \DateTime('NOW');
         $date_now = new \DateTime('NOW');
         $date = $date->add(new \DateInterval('PT'.$json->expires_in.'S'));
-        $_SESSION['expires'] = $date;
-		
 		$date_time = $date->format('Y-m-d H:i:s');
-		
 		$created_date = $date_now->format('Y-m-d H:i:s');
 		
 		global $conn;
@@ -249,29 +242,26 @@ class AccountRightV2 {
      * @return bool
      */
     public function retriveAccessToken() {
-		$currentDate = new \DateTime('NOW');
-		
 		global $conn;
 		$stmt = $conn->prepare('SELECT * FROM myob_keys WHERE Seq=1');
 		$stmt->execute();
 		while($row = $stmt->fetch(\PDO::FETCH_OBJ)) {
-			$_SESSION['expires'] = new \DateTime($row->expires_date);
-			$_SESSION['refresh'] = $row->refresh_token;
-			$_SESSION['access_token'] = $row->access_token;
+			$date = new \DateTime($row->expires_date);
+			$data['expires'] = $date->format('Y-m-d H:i:s');
+			$data['refresh'] = $row->refresh_token;
+			$data['access_token'] = $row->access_token;
+			$data['guid'] = $row->company_guid;
+			$this->_guid = $row->company_guid;
 		}
-		if($_SESSION['expires'] < $currentDate) {
-			$this->refreshToken($_SESSION['refresh']);
+		if(strtotime($data['expires']) < time()) {
+			$this->refreshToken($data['refresh']);
 		}
-
-            $this->_accesstoken = $_SESSION['access_token'];
-
-            if(isset($_SESSION['guid'])) {
-                $this->_guid = $_SESSION['guid'];
-            }
-
-            return true;
-
-        throw new \Exception('Error: retriveAccessToken() - Session invalid.');
+		
+		$this->_accesstoken = $data['access_token'];
+		
+		return $data;
+		
+		throw new \Exception('Error: retriveAccessToken() - Session invalid.');
     }
 
     /**
@@ -286,7 +276,7 @@ class AccountRightV2 {
         $this->_guid = '';
 
         $companyFiles = $this->_makeGetRequest();
-		
+
 		foreach($companyFiles as $cf):
 			if($cf->Name == $company_name):
 				$this->_guid = $cf->Id;
